@@ -26,16 +26,21 @@ class Crawling:
     driver = webdriver.Chrome(executable_path='chromedriver',chrome_options=chrome_options)
     driver.implicitly_wait(10)
 
-    def move_to_page(self,my_id,pw):
+
+    def __init__(self,my_id,pw):
+        self.my_id = my_id
+        self.pw = pw
+
+    def move_to_page(self):
 
         # 로그인 
         self.driver.get(url=self.url)
         self.driver.find_element_by_xpath('//*[@id="contents"]/div[2]/ul/li[1]/a/span').click()
         time.sleep(10)
-        self.driver.execute_script("document.getElementsByName('userId')[0].value=\'" + my_id + "\'")
+        self.driver.execute_script("document.getElementsByName('userId')[0].value=\'" + self.my_id + "\'")
         self.driver.find_element_by_name('pw').click()
         time.sleep(0.5)
-        pyautogui.write(pw,interval=0.1)
+        pyautogui.write(self.pw,interval=0.1)
         self.driver.find_element_by_xpath('//*[@class="btn1 id-login"]').click()
         time.sleep(5)
 
