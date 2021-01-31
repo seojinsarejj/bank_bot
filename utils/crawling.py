@@ -4,14 +4,10 @@ import os
 import pyautogui
 import selenium
 from selenium import webdriver
-from selenium.webdriver import ActionChains
-
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.chrome.options import Options
+
+from bs4 import BeautifulSoup
 
 import time
 
@@ -50,3 +46,16 @@ class Crawling:
         self.driver.find_element_by_xpath('//*[@id="diyLnb"]/ul/li[3]/a').click()     
         time.sleep(1)
 
+
+    def inquire_transaction(self,period,amount):
+
+        self.move_to_page()
+        # period = 1:당일, 2:3일, 3:1주, 4:2주, 5:1개월, 6:3개월, 7:6개월, 8:1년
+        self.driver.find_element_by_xpath('//*[@id="transactForm"]/table/tbody/tr[3]/td/ul/span[{}]/a'.format(period)).click()
+        time.sleep(0.1)
+        # amount = 15, 30, 50, 100
+        self.driver.find_element_by_xpath('//label[@for="listSize{}"]'.format(amount)).click()
+        time.sleep(0.3)
+        self.driver.find_element_by_xpath('//*[@id="searchBtn"]/span').click()
+        time.sleep(1)
+        return self.driver.page_source
