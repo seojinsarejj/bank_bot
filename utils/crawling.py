@@ -58,4 +58,18 @@ class Crawling:
         time.sleep(0.3)
         self.driver.find_element_by_xpath('//*[@id="searchBtn"]/span').click()
         time.sleep(1)
+
         return self.driver.page_source
+
+
+    def get_transaction(self,period,amount):
+
+        req = self.inquire_transaction(period,amount)
+        soup=BeautifulSoup(req, 'html.parser')
+        table = soup.find('table', class_='info-table')
+        result = table.find_all('tr')
+        row = []
+        for r in result:
+            row.append(r.find_all('td'))
+        
+        return row
