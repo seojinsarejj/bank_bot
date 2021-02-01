@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 
 import time
-
+import datetime
 
 class Crawling:
 
@@ -36,15 +36,15 @@ class Crawling:
         self.driver.execute_script("document.getElementsByName('userId')[0].value=\'" + self.my_id + "\'")
         self.driver.find_element_by_name('pw').click()
         time.sleep(0.5)
-        pyautogui.write(self.pw,interval=0.1)
+        pyautogui.write(self.pw,interval=0.005)
         self.driver.find_element_by_xpath('//*[@class="btn1 id-login"]').click()
-        time.sleep(5)
+        time.sleep(2)
 
         # 계좌 조회 페이지 이동
         self.driver.switch_to_frame("hanaMainframe")
         time.sleep(0.1)
         self.driver.find_element_by_xpath('//*[@id="diyLnb"]/ul/li[3]/a').click()     
-        time.sleep(1)
+        time.sleep(0.1)
 
 
     def inquire_transaction(self,period,amount):
@@ -55,21 +55,49 @@ class Crawling:
         time.sleep(0.1)
         # amount = 15, 30, 50, 100
         self.driver.find_element_by_xpath('//label[@for="listSize{}"]'.format(amount)).click()
-        time.sleep(0.3)
+        time.sleep(0.1)
         self.driver.find_element_by_xpath('//*[@id="searchBtn"]/span').click()
         time.sleep(1)
 
         return self.driver.page_source
 
 
-    def get_transaction(self,period,amount):
+    def parse_data(self,row):
+        
+        for i in range(len(row)):
+            row[i] = row[i].text
 
+        date = datetime.datetime.strptime(row[0].strip(), '%Y-%m-%d %H:%M:%S')
+        sortation = row[1]
+        content = row[2].strip()
+
+        minus = row[3].replace(" ","").replace("\n","").replace(",","")
+        minus = int(minus) if minus != "" else 0
+
+        plus = row[4].replace(" ","").replace("\n","").replace(",","")
+        plus = int(plus) if plus != "" else 0
+ 
+        balance = int(row[5].strip().replace(",",""))
+
+        dealership = row[6]
+
+        result = [date,sortation,content,minus,plus,balance,dealership]
+
+        return result
+
+
+    def get_transaction(self,period,amount):
+    
         req = self.inquire_transaction(period,amount)
         soup=BeautifulSoup(req, 'html.parser')
         table = soup.find('table', class_='info-table')
         result = table.find_all('tr')
-        row = []
+        rows = []
         for r in result:
-            row.append(r.find_all('td'))
-        
-        return row
+            rows.append(list(r.find_all('td')))
+
+        table = []
+        for row in rows[2:]:
+            table.append(self.parse_data(row))
+
+        return table
