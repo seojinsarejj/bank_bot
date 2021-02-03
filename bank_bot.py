@@ -8,10 +8,9 @@ from service.crawling import Crawling
 my_id = account['id']
 pw = account['pw']
 my_token = token
-print(my_token)
 game = discord.Game("도움말 : !도움말")
 
-crawling = Crawling(my_id,pw)
+
 
 bot = commands.Bot(command_prefix='!', status=discord.Status.online,activity=game)
 
@@ -22,7 +21,8 @@ async def on_ready():
 
 @bot.command()
 async def 거래내역(ctx):
-    
+
+    crawling = Crawling(my_id,pw)
     embed=discord.Embed(title="내 거래 내역", color=0x00ff56)
     result = crawling.get_transaction(3,50)
     for i in range(len(result)):

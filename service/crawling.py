@@ -15,15 +15,16 @@ import datetime
 class Crawling:
 
     url = "https://www.kebhana.com/"
-    
-    chrome_options = Options()
-    chrome_options.add_extension('dncepekefegjiljlfbihljgogephdhph.crx')
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-    driver = webdriver.Chrome(executable_path='chromedriver',chrome_options=chrome_options)
-    driver.implicitly_wait(10)
-
+        
 
     def __init__(self,my_id,pw):
+
+        chrome_options = Options()
+        # chrome_options.add_argument("headless")
+        chrome_options.add_extension('dncepekefegjiljlfbihljgogephdhph.crx')
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        self.driver = webdriver.Chrome(executable_path='chromedriver',chrome_options=chrome_options)
+        self.driver.implicitly_wait(10)
         self.my_id = my_id
         self.pw = pw
 
@@ -59,7 +60,10 @@ class Crawling:
         self.driver.find_element_by_xpath('//*[@id="searchBtn"]/span').click()
         time.sleep(1)
 
-        return self.driver.page_source
+        source = self.driver.page_source
+        self.driver.quit()
+
+        return source
 
 
     def parse_data(self,row):
