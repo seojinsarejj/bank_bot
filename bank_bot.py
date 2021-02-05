@@ -20,20 +20,25 @@ async def on_ready():
 
 
 @bot.command()
-async def 거래내역(ctx):
+async def 거래내역(ctx,*param):
     await ctx.send("잠시만 기다려주세요")
     try:
         crawling = Crawling(my_id,pw)
+        result = crawling.get_transaction(int(param[0]),int(param[1]))
+        
         embed=discord.Embed(title="내 거래 내역", color=0x00ff56)
-        result = crawling.get_transaction(3,50)
+
         for i in range(len(result)):
+            
             embed.add_field(
                 name=str(result[i][0]), 
                 value= result[i][1] + " " + result[i][2]  + " " + str(result[i][3]) + " " + str(result[i][4]) + " " + str(result[i][5]) + " " + result[i][6],
                 inline=False)
 
         await ctx.send(embed=embed)
-    except:
+        
+    except Exception as e:
+        print(e)
         await ctx.send("오류가 발생하였습니다.")
 
 bot.run(my_token)
