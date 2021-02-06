@@ -1,5 +1,6 @@
 import asyncio, discord
 import numpy as np
+from .utils import Util
 class Embed:
 
     def my_transaction_embed(result):
@@ -11,10 +12,11 @@ class Embed:
         for i in range(len(result)):
             minus += result[i][3]
             plus += result[i][4]
+            name,value = Util.divide_date_and_contents(result[i])
             embed.add_field(
-                name=str(result[i][0]), 
-                value= result[i][1] + " " + result[i][2]  + " " + str(result[i][3]) + " " + str(result[i][4]) + " " + str(result[i][5]) + " " + result[i][6],
-                inline=False)
+                    name = name, 
+                    value= value,
+                    inline = False)
 
         embed.add_field(
             name="총 지출",
@@ -36,12 +38,14 @@ class Embed:
         IQR = q3 - q1
         result = [record for record in result if record[3] < (q1 - 1.5 * IQR)]
 
+
         if result :
             for i in range(len(result)):
+                name,value = Util.divide_date_and_contents(result[i])
                 embed.add_field(
-                    name=str(result[i][0]), 
-                    value= result[i][1] + " " + result[i][2]  + " " + str(result[i][3]) + " " + str(result[i][4]) + " " + str(result[i][5]) + " " + result[i][6],
-                    inline=False)
+                    name = name, 
+                    value= value,
+                    inline = False)
         else:
             embed.add_field(
                 name= "평소보다 큰 지출이 없습니다.",
