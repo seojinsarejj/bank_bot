@@ -57,15 +57,7 @@ async def 잔액통계(ctx,*param):
     try:
         crawling = Crawling(my_id,pw)
         result = crawling.get_transaction(int(param[0]),int(param[1]))
-        
-        df = Util.result_to_dataframe(result)
-        df = df.sort_index(ascending=True)
-
-        df_graph = df['balance'].plot(title='잔액 통계')
-        fig = df_graph.get_figure()
-        fig.savefig('balance.png')
-        file = discord.File("balance.png")
-        await ctx.send(file=file)
+        await ctx.send(file=Statistics.get_balance_graph(result))
 
     except Exception as e:
         print(e)

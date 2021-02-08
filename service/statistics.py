@@ -3,6 +3,7 @@ import numpy as np
 from .utils import Util
 class Statistics:
 
+    # 거래  내역
     def my_transaction_embed(result):
          
         embed=discord.Embed(title="내 거래 내역", color=0x00ff56)
@@ -29,6 +30,7 @@ class Statistics:
 
         return embed
 
+    # 평소보다 큰 지출
     def find_larger_than_usual_expenditure(result):
 
         embed = discord.Embed(title="평소보다 큰 지출",color=0x00ff56)
@@ -53,3 +55,16 @@ class Statistics:
             )
 
         return embed
+
+    # 잔액 통계
+    def get_balance_graph(result):
+
+        df = Util.result_to_dataframe(result)
+        df = df.sort_index(ascending=True)
+
+        df_graph = df['balance'].plot(title='잔액 통계')
+        fig = df_graph.get_figure()
+        fig.savefig('file/balance.png')
+        file = discord.File("file/balance.png")
+        
+        return file
