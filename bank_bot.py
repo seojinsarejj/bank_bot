@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from config import token,account
 from service.crawling import Crawling
-from service.embed import Embed
+from service.statistics import Statistics
 from service.utils import Util
 
 import pandas as pd
@@ -31,7 +31,7 @@ async def 거래내역(ctx,*param):
     try:
         crawling = Crawling(my_id,pw)
         result = crawling.get_transaction(int(param[0]),int(param[1]))
-        await ctx.send(embed=Embed.my_transaction_embed(result))
+        await ctx.send(embed=Statistics.my_transaction_embed(result))
         
     except Exception as e:
         print(e)
@@ -44,7 +44,7 @@ async def 이상치(ctx,*param):
     try:
         crawling = Crawling(my_id,pw)
         result = crawling.get_transaction(int(param[0]),int(param[1]))
-        await ctx.send(embed=Embed.find_larger_than_usual_expenditure(result))
+        await ctx.send(embed=Statistics.find_larger_than_usual_expenditure(result))
 
     except Exception as e:
         print(e)

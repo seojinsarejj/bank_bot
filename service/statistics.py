@@ -1,7 +1,7 @@
 import asyncio, discord
 import numpy as np
 from .utils import Util
-class Embed:
+class Statistics:
 
     def my_transaction_embed(result):
          
