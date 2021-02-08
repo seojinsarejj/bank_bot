@@ -64,7 +64,8 @@ async def 잔액통계(ctx,*param):
         df_graph = df['balance'].plot(title='잔액 통계')
         fig = df_graph.get_figure()
         fig.savefig('balance.png')
-
+        file = discord.File("balance.png")
+        await ctx.send(file=file)
 
     except Exception as e:
         print(e)
