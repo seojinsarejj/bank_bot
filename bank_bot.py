@@ -4,9 +4,12 @@ from discord.ext import commands
 from config import token,account
 from service.crawling import Crawling
 from service.embed import Embed
+from service.utils import Util
 
 import pandas as pd
 import matplotlib.pyplot as plt
+
+
 
 my_id = account['id']
 pw = account['pw']
@@ -55,11 +58,8 @@ async def 잔액통계(ctx,*param):
         crawling = Crawling(my_id,pw)
         result = crawling.get_transaction(int(param[0]),int(param[1]))
         
-        df = pd.DataFrame(result,columns=['date','sortation','content','minus','plus','balance','dealership'])
-        df.date = pd.to_datetime(df.date)
-        df = df.set_index('date')
+        df = Util.result_to_dataframe(result)
         df = df.sort_index(ascending=True)
-        print(df)
 
         df_graph = df['balance'].plot(title='잔액 통계')
         fig = df_graph.get_figure()
