@@ -71,7 +71,7 @@ class Crawling:
         for i in range(len(row)):
             row[i] = row[i].text
 
-        date = datetime.datetime.strptime(row[0].strip(), '%Y-%m-%d %H:%M:%S')
+        date = row[0].strip()
         sortation = row[1]
         content = row[2].strip()
 
