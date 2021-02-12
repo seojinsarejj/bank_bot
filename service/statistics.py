@@ -23,7 +23,7 @@ class Statistics:
 
         minus = plus = 0
 
-        for i in range(len(result)):
+        for i in range(23):
             minus += result[i][3]
             plus += result[i][4]
             name,value = Util.divide_date_and_contents(result[i])
@@ -58,7 +58,7 @@ class Statistics:
 
 
         if result :
-            for i in range(len(result)):
+            for i in range(23):
                 name,value = Util.divide_date_and_contents(result[i])
                 embed.add_field(
                     name = name, 
