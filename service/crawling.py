@@ -58,7 +58,7 @@ class Crawling:
         self.driver.find_element_by_xpath('//label[@for="listSize{}"]'.format(amount)).click()
         time.sleep(0.1)
         self.driver.find_element_by_xpath('//*[@id="searchBtn"]/span').click()
-        time.sleep(1)
+        time.sleep(2)
 
         source = self.driver.page_source
         self.driver.quit()
