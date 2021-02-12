@@ -21,11 +21,10 @@ class Statistics:
 
         embed=discord.Embed(title="내 거래 내역", color=0x00ff56)
 
-        minus = plus = 0
+        minus = sum([i[3] for i in result])
+        plus = sum([i[4] for i in result])
 
         for i in range(23):
-            minus += result[i][3]
-            plus += result[i][4]
             name,value = Util.divide_date_and_contents(result[i])
             embed.add_field(
                     name = name, 
