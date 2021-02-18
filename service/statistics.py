@@ -24,7 +24,10 @@ class Statistics:
         minus = sum([i[3] for i in result])
         plus = sum([i[4] for i in result])
 
-        for i in range(23):
+
+        for i in range(row_len):
+    
+            row_len = len(result) if len(result) <= 23 else 23
             name,value = Util.divide_date_and_contents(result[i])
             embed.add_field(
                     name = name, 
@@ -57,7 +60,9 @@ class Statistics:
 
 
         if result :
-            for i in range(23):
+    
+            row_len = len(result) if len(result) <= 23 else 23
+            for i in range(row_len):
                 name,value = Util.divide_date_and_contents(result[i])
                 embed.add_field(
                     name = name, 
